@@ -1,0 +1,195 @@
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700";
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-primary-orange: var(--primary-orange);
+  --color-primary-orange-light: var(--primary-orange-light);
+  --color-primary-orange-dark: var(--primary-orange-dark);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-light: var(--text-light);
+  --color-text-white: var(--text-white);
+  --color-rating-star: var(--rating-star);
+  --color-verified-bg: var(--verified-bg);
+  --color-verified-text: var(--verified-text);
+  --color-featured-bg: var(--featured-bg);
+  --color-featured-text: var(--featured-text);
+  --color-status-open: var(--status-open);
+  --color-glass-bg: var(--glass-bg);
+}
+
+:root {
+  --radius: 0.625rem;
+  
+  /* Primary orange gradient colors */
+  --primary-orange: #ff5722;
+  --primary-orange-light: #ff7043;
+  --primary-orange-dark: #e64a19;
+  --gradient-primary: linear-gradient(101.96deg, #ff5722 0.01%, #ff7043 100.01%);
+  
+  /* Neutral colors */
+  --background: #f9fafb;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+  
+  /* Primary theme colors */
+  --primary: #111827;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #111827;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --accent: #f3f4f6;
+  --accent-foreground: #111827;
+  
+  /* Status colors */
+  --destructive: #ef4444;
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --info: #0075ff;
+  
+  /* Border and input colors */
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #9ca3af;
+  
+  /* Text colors */
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+  --text-light: #9ca3af;
+  --text-white: #ffffff;
+  
+  /* Rating colors */
+  --rating-star: #facc15;
+  --rating-empty: #d1d5db;
+  
+  /* Verification badge */
+  --verified-bg: #dcfce7;
+  --verified-text: #166534;
+  --verified-icon: #166534;
+  
+  /* Featured badge */
+  --featured-bg: #fff7ed;
+  --featured-text: #9a3412;
+  
+  /* Status indicators */
+  --status-open: #16a34a;
+  --status-closed: #ef4444;
+  
+  /* Price range colors */
+  --price-budget: #16a34a;
+  --price-moderate: #f59e0b;
+  --price-expensive: #ef4444;
+  --price-luxury: #7c3aed;
+  
+  /* Category colors */
+  --category-restaurants: #ea580c;
+  --category-grocery: #059669;
+  --category-beauty: #db2777;
+  --category-services: #2563eb;
+  --category-fashion: #9333ea;
+  --category-health: #dc2626;
+  
+  /* Glassmorphism effects */
+  --glass-bg: rgba(255, 255, 255, 0.20);
+  --glass-border: rgba(255, 255, 255, 0.30);
+  --glass-blur: blur(4px);
+  
+  /* Shadows */
+  --shadow-sm: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0px 4px 6px rgba(0, 0, 0, 0.10), 0px 10px 15px rgba(0, 0, 0, 0.10);
+  --shadow-lg: 0px 10px 25px rgba(0, 0, 0, 0.15);
+  --shadow-card: 0px 4px 6px rgba(0, 0, 0, 0.05), 0px 10px 25px rgba(0, 0, 0, 0.10);
+  
+  /* Chart colors */
+  --chart-1: #ea580c;
+  --chart-2: #059669;
+  --chart-3: #db2777;
+  --chart-4: #2563eb;
+  --chart-5: #9333ea;
+}
+
+.dark {
+  --background: #111827;
+  --foreground: #f9fafb;
+  --card: #1f2937;
+  --card-foreground: #f9fafb;
+  --popover: #1f2937;
+  --popover-foreground: #f9fafb;
+  --primary: #f9fafb;
+  --primary-foreground: #111827;
+  --secondary: #374151;
+  --secondary-foreground: #f9fafb;
+  --muted: #374151;
+  --muted-foreground: #9ca3af;
+  --accent: #374151;
+  --accent-foreground: #f9fafb;
+  --destructive: #ef4444;
+  --border: rgba(255, 255, 255, 0.10);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #6b7280;
+}
+
+:root{
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  margin: auto;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
+
+@utility gradient-primary {
+  background: var(--gradient-primary);
+}
+
+@utility glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+}
