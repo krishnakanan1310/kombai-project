@@ -1,4 +1,4 @@
-@import "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700";
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700";
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
@@ -48,19 +48,29 @@
   --color-featured-bg: var(--featured-bg);
   --color-featured-text: var(--featured-text);
   --color-status-open: var(--status-open);
-  --color-glass-bg: var(--glass-bg);
+  --color-status-closed: var(--status-closed);
+  --color-price-budget: var(--price-budget);
+  --color-price-moderate: var(--price-moderate);
+  --color-price-expensive: var(--price-expensive);
+  --color-price-luxury: var(--price-luxury);
+  --color-category-restaurants: var(--category-restaurants);
+  --color-category-grocery: var(--category-grocery);
+  --color-category-beauty: var(--category-beauty);
+  --color-category-services: var(--category-services);
+  --color-category-fashion: var(--category-fashion);
+  --color-category-health: var(--category-health);
+  --color-focus-ring: var(--focus-ring);
 }
 
 :root {
   --radius: 0.625rem;
   
-  /* Primary orange gradient colors */
+  /* Primary orange colors */
   --primary-orange: #ff5722;
   --primary-orange-light: #ff7043;
   --primary-orange-dark: #e64a19;
-  --gradient-primary: linear-gradient(101.96deg, #ff5722 0.01%, #ff7043 100.01%);
   
-  /* Neutral colors */
+  /* Base colors */
   --background: #f9fafb;
   --foreground: #111827;
   --card: #ffffff;
@@ -68,8 +78,8 @@
   --popover: #ffffff;
   --popover-foreground: #111827;
   
-  /* Primary theme colors */
-  --primary: #111827;
+  /* Theme colors */
+  --primary: #ff5722;
   --primary-foreground: #ffffff;
   --secondary: #f3f4f6;
   --secondary-foreground: #111827;
@@ -98,18 +108,14 @@
   
   /* Rating colors */
   --rating-star: #facc15;
-  --rating-empty: #d1d5db;
   
-  /* Verification badge */
+  /* Badge colors */
   --verified-bg: #dcfce7;
   --verified-text: #166534;
-  --verified-icon: #166534;
-  
-  /* Featured badge */
   --featured-bg: #fff7ed;
   --featured-text: #9a3412;
   
-  /* Status indicators */
+  /* Status colors */
   --status-open: #16a34a;
   --status-closed: #ef4444;
   
@@ -127,16 +133,8 @@
   --category-fashion: #9333ea;
   --category-health: #dc2626;
   
-  /* Glassmorphism effects */
-  --glass-bg: rgba(255, 255, 255, 0.20);
-  --glass-border: rgba(255, 255, 255, 0.30);
-  --glass-blur: blur(4px);
-  
-  /* Shadows */
-  --shadow-sm: 0px 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0px 4px 6px rgba(0, 0, 0, 0.10), 0px 10px 15px rgba(0, 0, 0, 0.10);
-  --shadow-lg: 0px 10px 25px rgba(0, 0, 0, 0.15);
-  --shadow-card: 0px 4px 6px rgba(0, 0, 0, 0.05), 0px 10px 25px rgba(0, 0, 0, 0.10);
+  /* Focus ring */
+  --focus-ring: #3b82f6;
   
   /* Chart colors */
   --chart-1: #ea580c;
@@ -165,6 +163,7 @@
   --border: rgba(255, 255, 255, 0.10);
   --input: rgba(255, 255, 255, 0.15);
   --ring: #6b7280;
+  --focus-ring: #60a5fa;
 }
 
 :root{
@@ -184,12 +183,219 @@
   }
 }
 
-@utility gradient-primary {
-  background: var(--gradient-primary);
+/* Typography classes */
+.heading-primary {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
 }
 
-@utility glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
+.heading-secondary {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.body-primary {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.body-secondary {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Color utility classes */
+.text-primary-orange {
+  color: var(--primary-orange);
+}
+
+.text-primary-orange-light {
+  color: var(--primary-orange-light);
+}
+
+.text-primary-orange-dark {
+  color: var(--primary-orange-dark);
+}
+
+.bg-primary-orange {
+  background-color: var(--primary-orange);
+}
+
+.text-rating-star {
+  color: var(--rating-star);
+}
+
+.fill-rating-star {
+  fill: var(--rating-star);
+}
+
+.bg-verified-bg {
+  background-color: var(--verified-bg);
+}
+
+.text-verified-text {
+  color: var(--verified-text);
+}
+
+.bg-featured-bg {
+  background-color: var(--featured-bg);
+}
+
+.text-featured-text {
+  color: var(--featured-text);
+}
+
+.text-status-open {
+  color: var(--status-open);
+}
+
+.bg-status-open {
+  background-color: var(--status-open);
+}
+
+.text-status-closed {
+  color: var(--status-closed);
+}
+
+.bg-status-closed {
+  background-color: var(--status-closed);
+}
+
+.text-price-budget {
+  color: var(--price-budget);
+}
+
+.text-price-moderate {
+  color: var(--price-moderate);
+}
+
+.text-price-expensive {
+  color: var(--price-expensive);
+}
+
+.text-price-luxury {
+  color: var(--price-luxury);
+}
+
+.text-category-restaurants {
+  color: var(--category-restaurants);
+}
+
+.text-category-grocery {
+  color: var(--category-grocery);
+}
+
+.text-category-beauty {
+  color: var(--category-beauty);
+}
+
+.text-category-services {
+  color: var(--category-services);
+}
+
+.text-category-fashion {
+  color: var(--category-fashion);
+}
+
+.text-category-health {
+  color: var(--category-health);
+}
+
+.bg-category-restaurants {
+  background-color: var(--category-restaurants);
+}
+
+.bg-category-grocery {
+  background-color: var(--category-grocery);
+}
+
+.bg-category-beauty {
+  background-color: var(--category-beauty);
+}
+
+.bg-category-services {
+  background-color: var(--category-services);
+}
+
+.bg-category-fashion {
+  background-color: var(--category-fashion);
+}
+
+.bg-category-health {
+  background-color: var(--category-health);
+}
+
+/* CTA button styles */
+.cta-primary {
+  background-color: var(--primary-orange);
+  color: white;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cta-primary:hover {
+  background-color: var(--primary-orange-dark);
+  transform: translateY(-1px);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.10), 0px 10px 15px rgba(0, 0, 0, 0.10);
+}
+
+.cta-secondary {
+  background-color: #6366f1;
+  color: white;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cta-secondary:hover {
+  background-color: #4f46e5;
+  transform: translateY(-1px);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.10), 0px 10px 15px rgba(0, 0, 0, 0.10);
+}
+
+/* Gradient utility */
+.gradient-primary {
+  background: linear-gradient(101.96deg, var(--primary-orange) 0.01%, var(--primary-orange-light) 100.01%);
+}
+
+/* Focus ring utility */
+.focus-ring-focus-ring {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }

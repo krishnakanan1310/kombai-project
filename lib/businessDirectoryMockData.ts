@@ -1,3 +1,4 @@
+// Mock data for business directory application
 import { BusinessCategory, PriceRange, RatingLevel, SortOption, BusinessStatus } from './enums';
 
 // Mock data for business listings
@@ -18,7 +19,7 @@ export const mockBusinesses = [
     tags: ['Samosa', 'Takeout', 'Vegetarian Options', 'Delivery'],
     featured: true,
     verified: true,
-    image: '/images/businesses/spice-garden-restaurant.png'
+    image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop'
   },
   {
     id: '2',
@@ -36,7 +37,7 @@ export const mockBusinesses = [
     tags: ['Fresh Produce', 'Halal Meat', 'Money Transfer', 'Spices'],
     featured: false,
     verified: true,
-    image: '/images/businesses/desi-grocery-mart.png'
+    image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop'
   },
   {
     id: '3',
@@ -54,7 +55,7 @@ export const mockBusinesses = [
     tags: ['Bridal Makeup', 'Mehndi', 'Hair Styling', 'Threading'],
     featured: false,
     verified: true,
-    image: '/images/businesses/mehndi-beauty-lounge.png'
+    image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&h=300&fit=crop'
   },
   {
     id: '4',
@@ -72,7 +73,7 @@ export const mockBusinesses = [
     tags: ['Immigration Law', 'Family Law', 'Bilingual', 'Free Consultation'],
     featured: false,
     verified: true,
-    image: '/images/businesses/khan-law-firm.png'
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop'
   },
   {
     id: '5',
@@ -90,7 +91,7 @@ export const mockBusinesses = [
     tags: ['Bridal Wear', 'Custom Tailoring', 'Sarees', 'Lehengas'],
     featured: false,
     verified: true,
-    image: '/images/businesses/silk-saris-boutique.png'
+    image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=300&fit=crop'
   },
   {
     id: '6',
@@ -108,9 +109,10 @@ export const mockBusinesses = [
     tags: ['Family Medicine', 'Preventive Care', 'Bilingual Staff', 'Same Day Appointments'],
     featured: false,
     verified: true,
-    image: '/images/businesses/patel-family-medicine.png'
+    image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=300&fit=crop'
   }
 ];
+
 
 // Mock data for categories
 export const mockCategories = [
@@ -152,19 +154,19 @@ export const mockLocations = [
     id: '1',
     name: 'Jackson Heights, NY',
     businessCount: 234,
-    image: '/images/locations/jackson-heights.svg'
+    image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=400&h=300&fit=crop'
   },
   {
     id: '2',
     name: 'Devon Avenue, Chicago',
     businessCount: 189,
-    image: '/images/locations/devon-avenue.svg'
+    image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&h=300&fit=crop'
   },
   {
     id: '3',
     name: 'Fremont, CA',
     businessCount: 156,
-    image: '/images/locations/fremont-ca.png'
+    image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop'
   }
 ];
 
@@ -205,6 +207,7 @@ export const mockStats = {
   averageRating: 4.8
 };
 
+// Root component props
 export const mockRootProps = {
   searchQuery: '',
   selectedLocation: 'All Locations',

@@ -1,35 +1,57 @@
-import { PriceRange } from './enums';
+// Formatting functions for business directory data
+import { PriceRange, BusinessStatus, BusinessCategory } from './enums';
+
+export const formatDistance = (distance: number): string => {
+  return `${distance} miles away`;
+};
+
+export const formatReviewCount = (count: number): string => {
+  return `${count} reviews`;
+};
 
 export const formatRating = (rating: number): string => {
   return rating.toFixed(1);
 };
 
-export const formatReviewCount = (count: number): string => {
-  return `(${count} reviews)`;
+export const formatPriceRange = (priceRange: PriceRange): string => {
+  return priceRange;
 };
 
-export const formatDistance = (miles: number): string => {
-  return `${miles} miles away`;
+export const formatBusinessStatus = (status: BusinessStatus): string => {
+  switch (status) {
+    case BusinessStatus.OPEN:
+      return 'Open';
+    case BusinessStatus.CLOSED:
+      return 'Closed';
+    case BusinessStatus.TEMPORARILY_CLOSED:
+      return 'Temporarily Closed';
+    default:
+      return 'Unknown';
+  }
 };
 
-export const formatBusinessCount = (count: number): string => {
-  return `${count} businesses`;
+export const formatClosingTime = (hour: number): string => {
+  if (hour === 0) return '12:00 AM';
+  if (hour === 12) return '12:00 PM';
+  if (hour < 12) return `${hour}:00 AM`;
+  return `${hour - 12}:00 PM`;
 };
 
-export const formatOpenHours = (hour: number): string => {
-  const period = hour >= 12 ? 'PM' : 'AM';
-  const displayHour = hour > 12 ? hour - 12 : hour;
-  return `Open until ${displayHour}:00 ${period}`;
-};
-
-export const formatPriceRange = (range: PriceRange): string => {
-  return range;
-};
-
-export const formatResultsCount = (current: number, total: number): string => {
-  return `Showing 1-${current} of ${total.toLocaleString()} results`;
-};
-
-export const formatTotalResults = (total: number): string => {
-  return `Showing ${total.toLocaleString()} results found`;
+export const formatCategoryName = (category: BusinessCategory): string => {
+  switch (category) {
+    case BusinessCategory.RESTAURANTS:
+      return 'Restaurants';
+    case BusinessCategory.GROCERY:
+      return 'Grocery';
+    case BusinessCategory.BEAUTY:
+      return 'Beauty';
+    case BusinessCategory.SERVICES:
+      return 'Services';
+    case BusinessCategory.FASHION:
+      return 'Fashion';
+    case BusinessCategory.HEALTH:
+      return 'Health';
+    default:
+      return 'Other';
+  }
 };

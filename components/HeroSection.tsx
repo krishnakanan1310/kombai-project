@@ -1,15 +1,11 @@
 'use client';
 
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card } from '@/components/ui/card';
+import { Search, MapPin } from 'lucide-react';
 import { BusinessCategory } from '@/lib/enums';
-import SearchIcon from './icons/SearchIcon';
-import ChevronDownIcon from './icons/ChevronDownIcon';
-import RestaurantIcon from './icons/RestaurantIcon';
-import GroceryIcon from './icons/GroceryIcon';
-import BeautyIcon from './icons/BeautyIcon';
-import ServicesIcon from './icons/ServicesIcon';
 
 interface HeroSectionProps {
   selectedLocation: string;
@@ -18,74 +14,131 @@ interface HeroSectionProps {
   onCategorySelect: (category: BusinessCategory) => void;
 }
 
-const categoryIcons = {
-  [BusinessCategory.RESTAURANTS]: RestaurantIcon,
-  [BusinessCategory.GROCERY]: GroceryIcon,
-  [BusinessCategory.BEAUTY]: BeautyIcon,
-  [BusinessCategory.SERVICES]: ServicesIcon,
-};
+export default function HeroSection({
+  selectedLocation,
+  onLocationChange,
+  onSearch,
+  onCategorySelect
+}: HeroSectionProps) {
+  const [searchQuery, setSearchQuery] = useState('');
 
-const categories = [
-  { id: BusinessCategory.RESTAURANTS, name: 'Restaurants', icon: RestaurantIcon },
-  { id: BusinessCategory.GROCERY, name: 'Grocery', icon: GroceryIcon },
-  { id: BusinessCategory.BEAUTY, name: 'Beauty', icon: BeautyIcon },
-  { id: BusinessCategory.SERVICES, name: 'Services', icon: ServicesIcon },
-];
+  const locations = [
+    'All Locations',
+    'Jackson Heights, NY',
+    'Devon Avenue, Chicago',
+    'Fremont, CA',
+    'Southall, London',
+    'Brick Lane, London'
+  ];
 
-export default function HeroSection({ selectedLocation, onLocationChange, onSearch, onCategorySelect }: HeroSectionProps) {
+  const categories = [
+    { id: BusinessCategory.RESTAURANTS, name: 'Restaurants', color: 'bg-category-restaurants' },
+    { id: BusinessCategory.GROCERY, name: 'Grocery', color: 'bg-category-grocery' },
+    { id: BusinessCategory.BEAUTY, name: 'Beauty', color: 'bg-category-beauty' },
+    { id: BusinessCategory.SERVICES, name: 'Services', color: 'bg-category-services' },
+    { id: BusinessCategory.FASHION, name: 'Fashion', color: 'bg-category-fashion' },
+    { id: BusinessCategory.HEALTH, name: 'Health', color: 'bg-category-health' }
+  ];
+
+  const handleSearch = () => {
+    onSearch();
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
-    <section className="gradient-primary text-white py-16 px-4">
-      <div className="max-w-7xl mx-auto text-center">
-        {/* Hero Text */}
-        <h1 className="text-6xl font-bold leading-tight mb-6">
-          Find Your Perfect Desi Business
-        </h1>
-        <p className="text-2xl mb-12 max-w-4xl mx-auto">
-          Discover authentic South Asian restaurants, grocery stores, services, and more in your area
-        </p>
-
-        {/* Search Section */}
-        <div className="flex items-center justify-center gap-4 mb-12 max-w-4xl mx-auto">
-          <Select value={selectedLocation} onValueChange={onLocationChange}>
-            <SelectTrigger className="w-64 bg-white text-black">
-              <SelectValue placeholder="All Locations" />
-              <ChevronDownIcon width={14} height={8} color="#000000" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Locations</SelectItem>
-              <SelectItem value="jackson-heights">Jackson Heights, NY</SelectItem>
-              <SelectItem value="devon-avenue">Devon Avenue, Chicago</SelectItem>
-              <SelectItem value="fremont">Fremont, CA</SelectItem>
-            </SelectContent>
-          </Select>
-          
-          <Button 
-            onClick={onSearch}
-            className="bg-white text-primary-orange hover:bg-gray-100 font-semibold px-8 py-3 h-auto"
-          >
-            <SearchIcon width={16} height={16} color="#ff5722" className="mr-2" />
-            Search Now
-          </Button>
+    <section className="relative bg-gradient-to-br from-primary-orange/10 via-primary-orange-light/5 to-background py-16 px-4">
+      <div className="max-w-4xl mx-auto text-center">
+        {/* Hero Content */}
+        <div className="mb-12">
+          <h1 className="heading-primary text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            Find Your Perfect{' '}
+            <span className="text-primary-orange">Desi Business</span>
+          </h1>
+          <p className="body-secondary text-lg md:text-xl max-w-2xl mx-auto">
+            Discover authentic South Asian businesses in your area. From restaurants to services, 
+            find trusted local businesses that understand your culture and needs.
+          </p>
         </div>
 
-        {/* Category Quick Access */}
-        <div className="flex justify-center gap-6">
-          {categories.map((category) => {
-            const IconComponent = category.icon;
-            return (
-              <Card
+        {/* Search Form */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-12">
+          <div className="flex flex-col lg:flex-row gap-4 mb-6">
+            {/* Search Input */}
+            <div className="flex-1 relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              <Input
+                type="text"
+                placeholder="Search businesses, services, cuisine..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={handleKeyPress}
+                className="pl-12 pr-4 py-4 text-lg border-2 focus:border-primary-orange focus:ring-2 focus:ring-primary-orange/20"
+                aria-label="Search for businesses"
+              />
+            </div>
+
+            {/* Location Selector */}
+            <div className="lg:w-64">
+              <Select value={selectedLocation} onValueChange={onLocationChange}>
+                <SelectTrigger className="py-4 text-lg border-2 focus:border-primary-orange focus:ring-2 focus:ring-primary-orange/20">
+                  <div className="flex items-center">
+                    <MapPin className="h-5 w-5 text-muted-foreground mr-2" aria-hidden="true" />
+                    <SelectValue placeholder="Select location" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  {locations.map((location) => (
+                    <SelectItem key={location} value={location}>
+                      {location}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Search Button */}
+            <Button
+              onClick={handleSearch}
+              size="lg"
+              className="cta-primary py-4 px-8 text-lg font-semibold focus:ring-2 focus:ring-focus-ring"
+            >
+              Search
+            </Button>
+          </div>
+        </div>
+
+        {/* Quick Categories */}
+        <div>
+          <h2 className="heading-secondary text-xl font-semibold mb-6">
+            Browse by Category
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {categories.map((category) => (
+              <button
                 key={category.id}
-                className="glass-card p-6 cursor-pointer hover:bg-white/30 transition-colors"
                 onClick={() => onCategorySelect(category.id)}
+                className="group flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2"
+                aria-label={`Browse ${category.name} businesses`}
               >
-                <div className="flex flex-col items-center gap-2">
-                  <IconComponent width={26} height={30} color="#ffffff" />
-                  <span className="font-semibold text-white">{category.name}</span>
-                </div>
-              </Card>
-            );
-          })}
+                <div className={`w-12 h-12 rounded-full ${category.color} mb-3 group-hover:scale-110 transition-transform duration-200`} />
+                <span className="body-secondary text-sm font-medium group-hover:text-primary-orange transition-colors">
+                  {category.name}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
+      </div>
+
+      {/* Background Decoration */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-orange/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary-orange-light/5 rounded-full blur-3xl" />
       </div>
     </section>
   );

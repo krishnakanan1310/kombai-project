@@ -15,7 +15,7 @@ import PopularLocations from './PopularLocations';
 import BusinessOwnerCTA from './BusinessOwnerCTA';
 import NewsletterSignup from './NewsletterSignup';
 import Footer from './Footer';
-import SearchIcon from './icons/SearchIcon';
+import { Search } from 'lucide-react';
 
 interface FilterState {
   rating: RatingLevel;
@@ -91,13 +91,14 @@ export default function BusinessDirectory() {
       <section className="py-6 px-4 bg-white border-b border-border">
         <div className="max-w-7xl mx-auto">
           <div className="relative max-w-2xl mx-auto">
-            <SearchIcon width={16} height={16} color="#9ca3af" className="absolute left-3 top-1/2 transform -translate-y-1/2" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
             <Input
               type="text"
               placeholder="Search businesses, services, cuisine..."
               value={secondarySearchQuery}
               onChange={(e) => setSecondarySearchQuery(e.target.value)}
-              className="pl-10 pr-4 py-3 w-full text-lg"
+              className="pl-10 pr-4 py-3 w-full text-lg focus:ring-2 focus:ring-focus-ring"
+              aria-label="Search businesses"
             />
           </div>
         </div>

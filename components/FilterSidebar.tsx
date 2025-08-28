@@ -1,18 +1,21 @@
 'use client';
 
-import { Card } from '@/components/ui/card';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Filter, Star, DollarSign, MapPin, X } from 'lucide-react';
 import { BusinessCategory, PriceRange, RatingLevel } from '@/lib/enums';
 import { mockFilterOptions } from '@/lib/businessDirectoryMockData';
-import ChevronDownIcon from './icons/ChevronDownIcon';
 
 interface FilterState {
   rating: RatingLevel;
-  priceRanges: PriceRange[];
+  priceRanges: string[];
   categories: BusinessCategory[];
   features: string[];
   cuisines: string[];
@@ -25,183 +28,323 @@ interface FilterSidebarProps {
   onLocationChange: (location: string) => void;
 }
 
-export default function FilterSidebar({ filters, onFiltersChange, selectedLocation, onLocationChange }: FilterSidebarProps) {
-  const updateFilter = <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
-    onFiltersChange({ ...filters, [key]: value });
+export default function FilterSidebar({
+  filters,
+  onFiltersChange,
+  selectedLocation,
+  onLocationChange
+}: FilterSidebarProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const locations = [
+    'All Locations',
+    'Jackson Heights, NY',
+    'Devon Avenue, Chicago',
+    'Fremont, CA',
+    'Southall, London',
+    'Brick Lane, London'
+  ];
+
+  const ratingOptions = [
+    { value: RatingLevel.ANY, label: 'Any Rating' },
+    { value: RatingLevel.FIVE_STAR, label: '5 Stars' },
+    { value: RatingLevel.FOUR_STAR, label: '4+ Stars' },
+    { value: RatingLevel.THREE_STAR, label: '3+ Stars' },
+    { value: RatingLevel.TWO_STAR, label: '2+ Stars' }
+  ];
+
+  const handlePriceRangeChange = (priceRange: string, checked: boolean) => {
+    const newPriceRanges = checked
+      ? [...filters.priceRanges, priceRange]
+      : filters.priceRanges.filter(p => p !== priceRange);
+    
+    onFiltersChange({ ...filters, priceRanges: newPriceRanges });
   };
 
-  const toggleArrayFilter = <K extends keyof FilterState>(key: K, value: string) => {
-    const currentArray = filters[key] as string[];
-    const newArray = currentArray.includes(value)
-      ? currentArray.filter(item => item !== value)
-      : [...currentArray, value];
-    updateFilter(key, newArray as FilterState[K]);
+  const handleCategoryChange = (category: BusinessCategory, checked: boolean) => {
+    const newCategories = checked
+      ? [...filters.categories, category]
+      : filters.categories.filter(c => c !== category);
+    
+    onFiltersChange({ ...filters, categories: newCategories });
   };
 
-  return (
-    <Card className="w-80 p-6 h-fit">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="text-2xl font-bold text-text-primary">Filters</h3>
-        <Button 
-          variant="ghost" 
-          className="text-primary-orange hover:bg-primary-orange/10"
-          onClick={() => onFiltersChange({
-            rating: RatingLevel.ANY,
-            priceRanges: [],
-            categories: [],
-            features: [],
-            cuisines: []
-          })}
-        >
-          Clear All
-        </Button>
-      </div>
+  const handleFeatureChange = (feature: string, checked: boolean) => {
+    const newFeatures = checked
+      ? [...filters.features, feature]
+      : filters.features.filter(f => f !== feature);
+    
+    onFiltersChange({ ...filters, features: newFeatures });
+  };
 
-      {/* Location */}
-      <div className="mb-6">
-        <h4 className="text-lg font-semibold text-text-primary mb-3">Location</h4>
+  const handleCuisineChange = (cuisine: string, checked: boolean) => {
+    const newCuisines = checked
+      ? [...filters.cuisines, cuisine]
+      : filters.cuisines.filter(c => c !== cuisine);
+    
+    onFiltersChange({ ...filters, cuisines: newCuisines });
+  };
+
+  const clearAllFilters = () => {
+    onFiltersChange({
+      rating: RatingLevel.ANY,
+      priceRanges: [],
+      categories: [],
+      features: [],
+      cuisines: []
+    });
+  };
+
+  const getActiveFiltersCount = () => {
+    let count = 0;
+    if (filters.rating !== RatingLevel.ANY) count++;
+    count += filters.priceRanges.length;
+    count += filters.categories.length;
+    count += filters.features.length;
+    count += filters.cuisines.length;
+    return count;
+  };
+
+  const activeFiltersCount = getActiveFiltersCount();
+
+  const FilterContent = () => (
+    <div className="space-y-6">
+      {/* Clear Filters */}
+      {activeFiltersCount > 0 && (
+        <div className="flex items-center justify-between">
+          <span className="body-secondary text-sm">
+            {activeFiltersCount} filter{activeFiltersCount !== 1 ? 's' : ''} applied
+          </span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearAllFilters}
+            className="text-primary-orange hover:text-primary-orange-dark"
+          >
+            Clear All
+          </Button>
+        </div>
+      )}
+
+      {/* Location Filter */}
+      <div className="space-y-3">
+        <div className="flex items-center space-x-2">
+          <MapPin className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          <Label className="heading-secondary text-sm font-medium">Location</Label>
+        </div>
         <Select value={selectedLocation} onValueChange={onLocationChange}>
-          <SelectTrigger className="w-full">
-            <SelectValue />
-            <ChevronDownIcon width={14} height={8} color="#000000" />
+          <SelectTrigger className="w-full focus:ring-2 focus:ring-focus-ring">
+            <SelectValue placeholder="Select location" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Locations</SelectItem>
-            <SelectItem value="jackson-heights">Jackson Heights, NY</SelectItem>
-            <SelectItem value="devon-avenue">Devon Avenue, Chicago</SelectItem>
-            <SelectItem value="fremont">Fremont, CA</SelectItem>
+            {locations.map((location) => (
+              <SelectItem key={location} value={location}>
+                {location}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
 
-      {/* Rating */}
-      <div className="mb-6">
-        <h4 className="text-lg font-semibold text-text-primary mb-3">Minimum Rating</h4>
-        <RadioGroup value={filters.rating} onValueChange={(value) => updateFilter('rating', value as RatingLevel)}>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value={RatingLevel.ANY} id="any-rating" />
-            <Label htmlFor="any-rating" className="text-text-secondary">Any Rating</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value={RatingLevel.FIVE_STAR} id="5-star" />
-            <Label htmlFor="5-star" className="flex items-center gap-1">
-              <span className="text-rating-star">★★★★★</span>
-              <span className="text-text-secondary">& up</span>
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value={RatingLevel.FOUR_STAR} id="4-star" />
-            <Label htmlFor="4-star" className="flex items-center gap-1">
-              <span className="text-rating-star">★★★★</span>
-              <span className="text-rating-empty">★</span>
-              <span className="text-text-secondary">& up</span>
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value={RatingLevel.THREE_STAR} id="3-star" />
-            <Label htmlFor="3-star" className="flex items-center gap-1">
-              <span className="text-rating-star">★★★</span>
-              <span className="text-rating-empty">★★</span>
-              <span className="text-text-secondary">& up</span>
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value={RatingLevel.TWO_STAR} id="2-star" />
-            <Label htmlFor="2-star" className="flex items-center gap-1">
-              <span className="text-rating-star">★★</span>
-              <span className="text-rating-empty">★★★</span>
-              <span className="text-text-secondary">& up</span>
-            </Label>
-          </div>
-        </RadioGroup>
-      </div>
+      <Separator />
 
-      {/* Categories */}
-      <div className="mb-6">
-        <h4 className="text-lg font-semibold text-text-primary mb-3">Categories</h4>
-        <div className="space-y-3">
-          {mockFilterOptions.categories.map((category) => (
-            <div key={category.id} className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id={category.id}
-                  checked={filters.categories.includes(category.id)}
-                  onCheckedChange={() => toggleArrayFilter('categories', category.id)}
-                />
-                <Label htmlFor={category.id} className="text-text-secondary">{category.name}</Label>
-              </div>
-              <span className="text-text-light text-sm">{category.count}</span>
-            </div>
-          ))}
+      {/* Rating Filter */}
+      <div className="space-y-3">
+        <div className="flex items-center space-x-2">
+          <Star className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          <Label className="heading-secondary text-sm font-medium">Rating</Label>
         </div>
-        <Button variant="ghost" className="text-primary-orange hover:bg-primary-orange/10 mt-2">
-          Show Less
-        </Button>
+        <Select
+          value={filters.rating}
+          onValueChange={(value: RatingLevel) => onFiltersChange({ ...filters, rating: value })}
+        >
+          <SelectTrigger className="w-full focus:ring-2 focus:ring-focus-ring">
+            <SelectValue placeholder="Select rating" />
+          </SelectTrigger>
+          <SelectContent>
+            {ratingOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
-      {/* Price Range */}
-      <div className="mb-6">
-        <h4 className="text-lg font-semibold text-text-primary mb-3">Price Range</h4>
+      <Separator />
+
+      {/* Price Range Filter */}
+      <div className="space-y-3">
+        <div className="flex items-center space-x-2">
+          <DollarSign className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          <Label className="heading-secondary text-sm font-medium">Price Range</Label>
+        </div>
         <div className="space-y-3">
           {mockFilterOptions.priceRanges.map((priceRange) => (
-            <div key={priceRange.id} className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id={priceRange.id}
-                  checked={filters.priceRanges.includes(priceRange.id)}
-                  onCheckedChange={() => toggleArrayFilter('priceRanges', priceRange.id)}
-                />
-                <Label htmlFor={priceRange.id} className="text-text-secondary">{priceRange.name}</Label>
-              </div>
-              <span className="text-text-light text-sm">{priceRange.count}</span>
+            <div key={priceRange.id} className="flex items-center space-x-3">
+              <Checkbox
+                id={`price-${priceRange.id}`}
+                checked={filters.priceRanges.includes(priceRange.id)}
+                onCheckedChange={(checked) => handlePriceRangeChange(priceRange.id, checked as boolean)}
+                className="focus:ring-2 focus:ring-focus-ring"
+              />
+              <Label
+                htmlFor={`price-${priceRange.id}`}
+                className="flex-1 body-secondary text-sm cursor-pointer"
+              >
+                {priceRange.name}
+              </Label>
+              <Badge variant="secondary" className="text-xs">
+                {priceRange.count}
+              </Badge>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Features */}
-      <div className="mb-6">
-        <h4 className="text-lg font-semibold text-text-primary mb-3">Features & Amenities</h4>
+      <Separator />
+
+      {/* Categories Filter */}
+      <div className="space-y-3">
+        <Label className="heading-secondary text-sm font-medium">Categories</Label>
+        <div className="space-y-3">
+          {mockFilterOptions.categories.map((category) => (
+            <div key={category.id} className="flex items-center space-x-3">
+              <Checkbox
+                id={`category-${category.id}`}
+                checked={filters.categories.includes(category.id as BusinessCategory)}
+                onCheckedChange={(checked) => handleCategoryChange(category.id as BusinessCategory, checked as boolean)}
+                className="focus:ring-2 focus:ring-focus-ring"
+              />
+              <Label
+                htmlFor={`category-${category.id}`}
+                className="flex-1 body-secondary text-sm cursor-pointer"
+              >
+                {category.name}
+              </Label>
+              <Badge variant="secondary" className="text-xs">
+                {category.count}
+              </Badge>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <Separator />
+
+      {/* Features Filter */}
+      <div className="space-y-3">
+        <Label className="heading-secondary text-sm font-medium">Features</Label>
         <div className="space-y-3">
           {mockFilterOptions.features.map((feature) => (
-            <div key={feature.id} className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id={feature.id}
-                  checked={filters.features.includes(feature.id)}
-                  onCheckedChange={() => toggleArrayFilter('features', feature.id)}
-                />
-                <Label htmlFor={feature.id} className="text-text-secondary">{feature.name}</Label>
-              </div>
-              <span className="text-text-light text-sm">{feature.count}</span>
+            <div key={feature.id} className="flex items-center space-x-3">
+              <Checkbox
+                id={`feature-${feature.id}`}
+                checked={filters.features.includes(feature.id)}
+                onCheckedChange={(checked) => handleFeatureChange(feature.id, checked as boolean)}
+                className="focus:ring-2 focus:ring-focus-ring"
+              />
+              <Label
+                htmlFor={`feature-${feature.id}`}
+                className="flex-1 body-secondary text-sm cursor-pointer"
+              >
+                {feature.name}
+              </Label>
+              <Badge variant="secondary" className="text-xs">
+                {feature.count}
+              </Badge>
             </div>
           ))}
         </div>
-        <Button variant="ghost" className="text-primary-orange hover:bg-primary-orange/10 mt-2">
-          Show More (2 more)
-        </Button>
       </div>
 
-      {/* Cuisine Type */}
-      <div>
-        <h4 className="text-lg font-semibold text-text-primary mb-3">Cuisine Type</h4>
+      <Separator />
+
+      {/* Cuisines Filter */}
+      <div className="space-y-3">
+        <Label className="heading-secondary text-sm font-medium">Cuisines</Label>
         <div className="space-y-3">
           {mockFilterOptions.cuisines.map((cuisine) => (
-            <div key={cuisine.id} className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id={cuisine.id}
-                  checked={filters.cuisines.includes(cuisine.id)}
-                  onCheckedChange={() => toggleArrayFilter('cuisines', cuisine.id)}
-                />
-                <Label htmlFor={cuisine.id} className="text-text-secondary">{cuisine.name}</Label>
-              </div>
-              <span className="text-text-light text-sm">{cuisine.count}</span>
+            <div key={cuisine.id} className="flex items-center space-x-3">
+              <Checkbox
+                id={`cuisine-${cuisine.id}`}
+                checked={filters.cuisines.includes(cuisine.id)}
+                onCheckedChange={(checked) => handleCuisineChange(cuisine.id, checked as boolean)}
+                className="focus:ring-2 focus:ring-focus-ring"
+              />
+              <Label
+                htmlFor={`cuisine-${cuisine.id}`}
+                className="flex-1 body-secondary text-sm cursor-pointer"
+              >
+                {cuisine.name}
+              </Label>
+              <Badge variant="secondary" className="text-xs">
+                {cuisine.count}
+              </Badge>
             </div>
           ))}
         </div>
       </div>
-    </Card>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:block w-80">
+        <Card className="sticky top-24">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center space-x-2">
+              <Filter className="h-5 w-5" aria-hidden="true" />
+              <span>Filters</span>
+              {activeFiltersCount > 0 && (
+                <Badge className="bg-primary-orange text-white">
+                  {activeFiltersCount}
+                </Badge>
+              )}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="max-h-[calc(100vh-200px)] overflow-y-auto">
+            <FilterContent />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Mobile Filter Button */}
+      <div className="lg:hidden">
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-full mb-4 focus:ring-2 focus:ring-focus-ring"
+            >
+              <Filter className="h-4 w-4 mr-2" aria-hidden="true" />
+              Filters
+              {activeFiltersCount > 0 && (
+                <Badge className="ml-2 bg-primary-orange text-white">
+                  {activeFiltersCount}
+                </Badge>
+              )}
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-80">
+            <SheetHeader>
+              <SheetTitle className="flex items-center space-x-2">
+                <Filter className="h-5 w-5" aria-hidden="true" />
+                <span>Filters</span>
+                {activeFiltersCount > 0 && (
+                  <Badge className="bg-primary-orange text-white">
+                    {activeFiltersCount}
+                  </Badge>
+                )}
+              </SheetTitle>
+            </SheetHeader>
+            <div className="mt-6 max-h-[calc(100vh-120px)] overflow-y-auto">
+              <FilterContent />
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </>
   );
 }
